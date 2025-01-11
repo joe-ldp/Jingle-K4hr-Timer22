@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = project.maven_group
+version = project.plugin_version
+archivesBaseName = project.archives_base_name
+
+sourceCompatibility = JavaVersion.VERSION_21
+targetCompatibility = JavaVersion.VERSION_21
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url "https://www.jetbrains.com/intellij-repository/releases" }
+}
+
+compileJava {
+    options.compilerArgs << '-parameters'
+}
+
+dependencies {
+    // Choose Jingle version: https://jitpack.io/#DuncanRuns/Jingle/
+    implementation 'com.github.DuncanRuns:Jingle:v1.1.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+}
+
+
+processResources {
+    // Totally stolen from Fabric
+    inputs.property "version", project.version
+
+    filesMatching("jingle.plugin.json") {
+        expand "version": project.version
+    }
+}
